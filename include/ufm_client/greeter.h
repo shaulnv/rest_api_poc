@@ -4,13 +4,13 @@
 
 namespace greeter {
 
-  /**  Language codes to be used with the Greeter class */
+  /**  Language codes to be used with the ufm_client class */
   enum class LanguageCode { EN, DE, ES, FR };
 
   /**
    * @brief A class for saying hello in multiple languages
    */
-  class Greeter {
+  class ufm_client {
     std::string name;
 
   public:
@@ -18,7 +18,7 @@ namespace greeter {
      * @brief Creates a new greeter
      * @param name the name to greet
      */
-    Greeter(std::string name);
+    ufm_client(std::string name);
 
     /**
      * @brief Creates a localized string containing the greeting

@@ -1,5 +1,5 @@
-#include <greeter/greeter.h>
-#include <greeter/version.h>
+#include <ufm_client/greeter.h>
+#include <ufm_client/version.h>
 
 #include <cxxopts.hpp>
 #include <iostream>
@@ -36,7 +36,7 @@ auto main(int argc, char** argv) -> int {
   }
 
   if (result["version"].as<bool>()) {
-    std::cout << "Greeter, version " << GREETER_VERSION << std::endl;
+    std::cout << "ufm_client, version " << UFM_CLIENT_VERSION << std::endl;
     return 0;
   }
 
@@ -46,7 +46,7 @@ auto main(int argc, char** argv) -> int {
     return 1;
   }
 
-  greeter::Greeter greeter(name);
+  greeter::ufm_client greeter(name);
   std::cout << greeter.greet(langIt->second) << std::endl;
 
   return 0;

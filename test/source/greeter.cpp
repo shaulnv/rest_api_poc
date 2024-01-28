@@ -1,13 +1,13 @@
 #include <doctest/doctest.h>
-#include <greeter/greeter.h>
-#include <greeter/version.h>
+#include <ufm_client/greeter.h>
+#include <ufm_client/version.h>
 
 #include <string>
 
-TEST_CASE("Greeter") {
+TEST_CASE("ufm_client") {
   using namespace greeter;
 
-  Greeter greeter("Tests");
+  ufm_client greeter("Tests");
 
   CHECK(greeter.greet(LanguageCode::EN) == "Hello, Tests!");
   CHECK(greeter.greet(LanguageCode::DE) == "Hallo Tests!");
@@ -15,6 +15,6 @@ TEST_CASE("Greeter") {
   CHECK(greeter.greet(LanguageCode::FR) == "Bonjour Tests!");
 }
 
-TEST_CASE("Greeter version") {
-  CHECK(std::string(GREETER_VERSION) == std::string("1.0"));
+TEST_CASE("ufm_client version") {
+  CHECK(std::string(UFM_CLIENT_VERSION) == std::string("1.0"));
 }
