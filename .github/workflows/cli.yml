@@ -1,4 +1,4 @@
-name: Standalone
+name: cli
 
 on:
   push:

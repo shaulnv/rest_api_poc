@@ -41,20 +41,20 @@ This template is the result of learnings from many previous projects and should 
 - Add [your project's codecov token](https://docs.codecov.io/docs/quick-start) to your project's github secrets under `CODECOV_TOKEN`
 - Happy coding!
 
-Eventually, you can remove any unused files, such as the standalone directory or irrelevant github workflows for your project.
+Eventually, you can remove any unused files, such as the cli directory or irrelevant github workflows for your project.
 Feel free to replace the License with one suited for your project.
 
 To cleanly separate the library and subproject code, the outer `CMakeList.txt` only defines the library itself while the tests and other subprojects are self-contained in their own directories. 
 During development it is usually convenient to [build all subprojects at once](#build-everything-at-once).
 
-### Build and run the standalone target
+### Build and run the cli target
 
 Use the following command to build and run the executable target.
 
 ```bash
-cmake -S standalone -B build/standalone
-cmake --build build/standalone
-./build/standalone/ufm_client --help
+cmake -S cli -B build/cli
+cmake --build build/cli
+./build/cli/ufm_client --help
 ```
 
 ### Build and run test suite
@@ -67,7 +67,7 @@ cmake --build build/test
 CTEST_OUTPUT_ON_FAILURE=1 cmake --build build/test --target test
 
 # or simply call the executable: 
-./build/test/ufm_clientTests
+./build/test/ufm_client_tests
 ```
 
 To collect code coverage information, run CMake with the `-DENABLE_TEST_COVERAGE=1` option.
@@ -118,18 +118,18 @@ cmake -S all -B build
 cmake --build build
 
 # run tests
-./build/test/ufm_clientTests
+./build/test/ufm_client_tests
 # format code
 cmake --build build --target fix-format
-# run standalone
-./build/standalone/ufm_client --help
+# run cli
+./build/cli/ufm_client --help
 # build docs
 cmake --build build --target GenerateDocs
 ```
 
 ### Additional tools
 
-The test and standalone subprojects include the [tools.cmake](cmake/tools.cmake) file which is used to import additional tools on-demand through CMake configuration arguments.
+The test and cli subprojects include the [tools.cmake](cmake/tools.cmake) file which is used to import additional tools on-demand through CMake configuration arguments.
 The following are currently supported.
 
 #### Sanitizers
@@ -153,11 +153,11 @@ Ccache can be enabled by configuring with `-DUSE_CCACHE=<ON | OFF>`.
 Yes, however you will need to change the library type to an `INTERFACE` library as documented in the [CMakeLists.txt](CMakeLists.txt).
 See [here](https://github.com/TheLartians/StaticTypeInfo) for an example header-only library based on the template.
 
-> I don't need a standalone target / documentation. How can I get rid of it?
+> I don't need a cli target / documentation. How can I get rid of it?
 
-Simply remove the standalone / documentation directory and according github workflow file.
+Simply remove the cli / documentation directory and according github workflow file.
 
-> Can I build the standalone and tests at the same time? / How can I tell my IDE about all subprojects?
+> Can I build the cli and tests at the same time? / How can I tell my IDE about all subprojects?
 
 To keep the template modular, all subprojects derived from the library have been separated into their own CMake modules.
 This approach makes it trivial for third-party projects to re-use the projects library code.
@@ -172,7 +172,7 @@ Glob is considered bad because any changes to the source file structure [might n
 > I want create additional targets that depend on my library. Should I modify the main CMakeLists to include them?
 
 Avoid including derived projects from the libraries CMakeLists (even though it is a common sight in the C++ world), as this effectively inverts the dependency tree and makes the build system hard to reason about.
-Instead, create a new directory or project with a CMakeLists that adds the library as a dependency (e.g. like the [standalone](standalone/CMakeLists.txt) directory).
+Instead, create a new directory or project with a CMakeLists that adds the library as a dependency (e.g. like the [cli](cli/CMakeLists.txt) directory).
 Depending type it might make sense move these components into a separate repositories and reference a specific commit or version of the library.
 This has the advantage that individual libraries and components can be improved and updated independently.
 

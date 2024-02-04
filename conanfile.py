@@ -20,7 +20,7 @@ class ufm_clientRecipe(ConanFile):
     default_options = {"shared": False, "fPIC": True}
 
     # Sources are located in the same place as this recipe, copy them to the recipe
-    exports_sources = "CMakeLists.txt", "all/*", "cmake/*", "documentation/*", "include/*", "source/*", "standalone/*", "test/*"
+    exports_sources = "CMakeLists.txt", "all/*", "cmake/*", "documentation/*", "include/*", "source/*", "cli/*", "test/*"
 
     requires = ("libcurl/8.5.0", "uncrustify/0.78.1", "openssl/3.2.0")
     tool_requires = ("openapi-generator/7.2.0")
