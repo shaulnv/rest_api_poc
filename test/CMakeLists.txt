@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.14...3.22)
 
-project(ufm_clientTests LANGUAGES CXX)
+project(ufm_client_tests LANGUAGES CXX)
 
 # ---- Options ----
 
@@ -41,7 +41,7 @@ if(NOT TEST_INSTALLED_VERSION)
   endif()
 endif()
 
-# ---- Add ufm_clientTests ----
+# ---- Add ufm_client_tests ----
 
 enable_testing()
 
