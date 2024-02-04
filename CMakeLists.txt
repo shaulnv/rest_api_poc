@@ -40,12 +40,56 @@ CPMAddPackage(
 file(GLOB_RECURSE headers CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h")
 file(GLOB_RECURSE sources CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/source/*.cpp")
 
+# set(CMAKE_JAVA_INCLUDE_PATH "${CMAKE_PROGRAM_PATH}:${CMAKE_JAVA_INCLUDE_PATH}")
+# find_program(OPENAPI_GENERATOR openapi-generator) set(OPENAPI_GENERATOR_CMD ${OPENAPI_GENERATOR}
+# generate -i source/ufm_rest_server_api.yaml -g c -o ${CMAKE_CURRENT_BINARY_DIR})
+# add_custom_target(ufm_client_generated COMMAND ${CMAKE_COMMAND} -E env "PATH=\"$ENV{PATH}\""
+# ${OPENAPI_GENERATOR_CMD} WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} COMMENT "Generating client
+# for UFM's REST API, with OpenAPI Generator" )
+
+set(UFM_SERVER_REST_API_FILE source/ufm_rest_server_api.yaml)
+set(UFM_CLIENT_GENERATED_FOLDER "${CMAKE_CURRENT_BINARY_DIR}/ufm_client_generated")
+set(GENERATE_REST_CLIENT
+    openapi-generator
+    generate
+    -i
+    ${UFM_SERVER_REST_API_FILE}
+    -g
+    c
+    -o
+    ${UFM_CLIENT_GENERATED_FOLDER}
+)
+
+add_custom_target(
+  ufm_client_generated
+  COMMAND ${GENERATE_REST_CLIENT}
+  WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+  DEPENDS ${UFM_SERVER_REST_API_FILE}
+  COMMENT "Generating client for UFM's REST API, with OpenAPI Generator"
+)
+
+if(NOT EXISTS ${UFM_CLIENT_GENERATED_FOLDER})
+  message("ufm client doesn't exist, creating it at '${UFM_CLIENT_GENERATED_FOLDER}'")
+  execute_process(
+    COMMAND ${GENERATE_REST_CLIENT}
+    WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+    RESULT_VARIABLE result
+    OUTPUT_VARIABLE output
+  )
+endif()
+
+add_subdirectory(${UFM_CLIENT_GENERATED_FOLDER})
+# execute_process(COMMAND cmake -E remove_directory ${UFM_CLIENT_GENERATED_FOLDER})
+
 # ---- Create library ----
 
 # Note: for header-only libraries change all PUBLIC flags to INTERFACE and create an interface
 # target: add_library(${PROJECT_NAME} INTERFACE)
 add_library(${PROJECT_NAME} ${headers} ${sources})
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_STANDARD 11)
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${UFM_CLIENT_GENERATED_FOLDER})
+# add_dependencies(${PROJECT_NAME} ufm_client_generated) # remove or fix to have a build-when-yaml-change (UFM_SERVER_REST_API_FILE)
 
 # being a cross-platform target, we enforce standards conformance on MSVC
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")

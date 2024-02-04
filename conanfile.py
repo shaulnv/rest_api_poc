@@ -22,6 +22,9 @@ class ufm_clientRecipe(ConanFile):
     # Sources are located in the same place as this recipe, copy them to the recipe
     exports_sources = "CMakeLists.txt", "all/*", "cmake/*", "documentation/*", "include/*", "source/*", "standalone/*", "test/*"
 
+    requires = ("libcurl/8.5.0", "uncrustify/0.78.1", "openssl/3.2.0")
+    tool_requires = ("openapi-generator/7.2.0")
+
     def config_options(self):
         if self.settings.os == "Windows":
             self.options.rm_safe("fPIC")
