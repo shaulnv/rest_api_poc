@@ -34,7 +34,7 @@ class ufm_clientRecipe(ConanFile):
             self.options.rm_safe("fPIC")
 
     def layout(self):
-        cmake_layout(self)
+        cmake_layout(self, src_folder="./all") # confiure all targets. library, cli, tests, docs, etc.
 
     def generate(self):
         deps = CMakeDeps(self)
